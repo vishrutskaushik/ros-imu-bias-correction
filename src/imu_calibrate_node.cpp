@@ -36,14 +36,14 @@ class IMU_Calibrate{
     ros::Publisher imuPublisher_;
     sensor_msgs::Imu unBiasedIMU_;
 
-        IMU_Calibrate(ros::NodeHandle &nh){
-            imuPublisher_ = nh.advertise<sensor_msgs::Imu>("/imu/data", 1000);
-        }
+    IMU_Calibrate(ros::NodeHandle &nh, std::string ubiasedImuTopic){
+        imuPublisher_ = nh.advertise<sensor_msgs::Imu>(ubiasedImuTopic, 1000);
+    }
 
-        void readIMUData(const sensor_msgs::Imu::ConstPtr &);
-        void removeIMUBias(const sensor_msgs::Imu::ConstPtr &);
-        void calculateIMUBias(const sensor_msgs::Imu::ConstPtr &);
-        long long int getCount(){return count;}
+    void readIMUData(const sensor_msgs::Imu::ConstPtr &);
+    void removeIMUBias(const sensor_msgs::Imu::ConstPtr &);
+    void calculateIMUBias(const sensor_msgs::Imu::ConstPtr &);
+    long long int getCount(){return count;}
 
 };
 
@@ -102,10 +102,12 @@ int main(int argc, char **argv){
     ros::init(argc, argv, "imu_calibrate");
     ros::NodeHandle nh;
 
-    IMU_Calibrate imuCalibrate(nh);
+    std::string rawImuTopic = "/imu/raw_data";
+    std::string ubiasedImuTopic = "/imu/data";
 
+    IMU_Calibrate imuCalibrate(nh, ubiasedImuTopic);
 
-    ros::Subscriber sub = nh.subscribe("/imu/raw_data", 1000, &IMU_Calibrate::calculateIMUBias, &imuCalibrate);
+    ros::Subscriber sub = nh.subscribe(rawImuTopic, 1000, &IMU_Calibrate::calculateIMUBias, &imuCalibrate);
 
     ROS_INFO("Calibrating IMU, keep the rover stationary");
 
@@ -135,7 +137,7 @@ int main(int argc, char **argv){
 
     ROS_INFO("Publishing Unbiased IMU Data");
 
-    sub = nh.subscribe("/imu/raw_data", 1000, &IMU_Calibrate::removeIMUBias, &imuCalibrate);
+    sub = nh.subscribe(rawImuTopic, 1000, &IMU_Calibrate::removeIMUBias, &imuCalibrate);
     ros::spin();
 
 }
