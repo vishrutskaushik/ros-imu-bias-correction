@@ -9,9 +9,9 @@ class IMU_Calibrate{
     double total_acc_x_ = 0.0;
     double total_acc_y_ = 0.0;
     double total_acc_z_ = 0.0;
-    double total_orientation_x_ = 0.707;
+    double total_orientation_x_ = 0.0;
     double total_orientation_y_ = 0.0;
-    double total_orientation_z_ = 0.707;
+    double total_orientation_z_ = 0.0;
     double total_orientation_w_ = 0.0;
 
     double bias_acc_x_ = 0.0;
@@ -26,10 +26,10 @@ class IMU_Calibrate{
     double desired_acc_x_ = 0.0;
     double desired_acc_y_ = 0.0;
     double desired_acc_z_ = 9.8;
-    double desired_orientation_x_ = 0.0;
+    double desired_orientation_x_ = 0.707;
     double desired_orientation_y_ = 0.0;
-    double desired_orientation_z_ = 0.0;
-    double desired_orientation_w_ = 1.0;
+    double desired_orientation_z_ = 0.707;
+    double desired_orientation_w_ = 0.0;
     
     long long int count = 0; 
 
