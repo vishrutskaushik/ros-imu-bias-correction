@@ -1,4 +1,4 @@
-# Ros IMU Bias Correction
+# ROS IMU Bias Correction
 
 ```
 mkdir imu_ws && cd imu_ws
